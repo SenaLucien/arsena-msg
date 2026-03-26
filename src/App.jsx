@@ -699,19 +699,13 @@ export default function App() {
     toastTimer.current = setTimeout(() => setToast(null), 2500);
   }
 
-  // Parse hash for public send page
+  // Parse pathname for public send page e.g. /u/arsena
   useEffect(() => {
-    function onHash() {
-      const hash = window.location.hash;
-      const m = hash.match(/^#\/u\/([a-z0-9_]+)$/);
-      if (m) {
-        setTargetUser(m[1]);
-        setPage("send-public");
-      }
+    const m = window.location.pathname.match(/^\/u\/([a-z0-9_]+)$/i);
+    if (m) {
+      setTargetUser(m[1].toLowerCase());
+      setPage("send-public");
     }
-    window.addEventListener("hashchange", onHash);
-    onHash();
-    return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
   function handleEnter(username) {
@@ -763,3 +757,4 @@ export default function App() {
 
   return <HomePage onEnter={handleEnter} />;
 }
+
